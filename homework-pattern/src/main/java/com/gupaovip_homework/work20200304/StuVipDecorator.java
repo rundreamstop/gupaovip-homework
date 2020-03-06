@@ -1,6 +1,7 @@
 package com.gupaovip_homework.work20200304;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,11 +14,7 @@ public class StuVipDecorator extends MenuDecorator {
     }
 
     protected List<String> menuList() {
-        List<String> strings = super.menuList();
-        List arrList = new ArrayList(strings);
-        arrList.add("作业");
-        arrList.add("题库");
-        arrList.add("成长墙");
-        return arrList;
+
+        return Arrays.asList("问答", "文章", "精品课", "冒泡", "商城","作业","题库","成长墙");
     }
 }
