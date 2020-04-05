@@ -6,6 +6,7 @@
     <modules>
         <module>homework-pattern</module>
         <module>homework-juc</module>
+        <module>homework-spring</module>
     </modules>
 <!--    <parent>-->
 <!--        <groupId>org.springframework.boot</groupId>-->
