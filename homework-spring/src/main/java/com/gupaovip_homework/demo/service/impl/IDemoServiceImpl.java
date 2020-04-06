@@ -7,7 +7,7 @@ import com.gupaovip_homework.demo.service.IDemoService;
  * @Author: Ray Allen  @Time:2020/4/5 0005
  */
 
-@RunService("ZhIDemoService")
+@RunService
 public class IDemoServiceImpl implements IDemoService {
     @Override
     public String getName(String str) {
