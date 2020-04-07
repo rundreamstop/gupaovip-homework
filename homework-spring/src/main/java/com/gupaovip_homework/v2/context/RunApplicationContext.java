@@ -39,9 +39,14 @@ public class RunApplicationContext {
 
             // 2.解析配置文件，封装成 Beandefinition
             List<RunBeandefinition> beandefinitions = reader.loadBeanDefinitions();
+            for (RunBeandefinition beandefinition : beandefinitions) {
+                System.out.println("封装为beandefinition= " + beandefinition);
+            }
+            System.out.println("封装beandefinition 完成");
 
             // 3.把Beandefinition
             doRegistBeanDefinition(beandefinitions);
+            System.out.println();
 
             doAutowrited();
 
@@ -63,11 +68,10 @@ public class RunApplicationContext {
     private void doRegistBeanDefinition(List<RunBeandefinition> beandefinitions) throws Exception {
         for (RunBeandefinition beandefinition : beandefinitions) {
             // 两种方式注入 缓存起来
-            System.out.println("doRegistBeanDefinition beandefinition=" + beandefinition);
 //            if (this.beandefinitionMap.containsKey(beandefinition.getFactoryBeanName())) {
 //                throw new Exception("这个bean已存在" + beandefinition.getFactoryBeanName());
 //            }
-            beandefinitionMap.put(beandefinition.getFactoryBeanName(), beandefinition);
+//            beandefinitionMap.put(beandefinition.getFactoryBeanName(), beandefinition);
             beandefinitionMap.put(beandefinition.getBeanClassName(), beandefinition);
         }
     }

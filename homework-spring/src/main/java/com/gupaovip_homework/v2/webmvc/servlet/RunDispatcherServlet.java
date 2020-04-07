@@ -63,15 +63,12 @@ public class RunDispatcherServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
 
         // 初始化spring核心ioc容器
-
-        // 1.加载配置文件
         applicationContext = new RunApplicationContext(config.getInitParameter("contextConfigLocation"));
 
-        // 5.初始化HandlerMapping
-        doInitHandlerMapping();
 
+        // 5.初始化HandlerMapping   // TODO 还未改造完
+        doInitHandlerMapping();
         printHandlerMapper();
-        System.out.println("Run Spring Init Finsh");
     }
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {

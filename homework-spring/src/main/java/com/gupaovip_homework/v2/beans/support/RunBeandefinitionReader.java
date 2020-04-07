@@ -17,8 +17,6 @@ import java.util.Properties;
  */
 public class RunBeandefinitionReader {
 
-    private String[] configLocations;
-
     // 配置读取
     private Properties contextConfig = new Properties();
 
@@ -30,6 +28,10 @@ public class RunBeandefinitionReader {
 
         //扫描配置文件中 配置的扫描的类
         doScanner(contextConfig.getProperty("scanPackage"));
+        for (String beanClass : registryBeanClasses) {
+            System.out.println("扫描配置类完成beanClass= " + beanClass);
+        }
+        System.out.println("配置扫描的类完成");
     }
 
 
