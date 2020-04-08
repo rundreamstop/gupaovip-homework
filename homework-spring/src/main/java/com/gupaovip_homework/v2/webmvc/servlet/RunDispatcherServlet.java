@@ -38,6 +38,18 @@ public class RunDispatcherServlet extends HttpServlet {
     private RunApplicationContext applicationContext;
 
     @Override
+    public void init(ServletConfig config) throws ServletException {
+
+        // 初始化Spring核心ioc容器
+        applicationContext = new RunApplicationContext(config.getInitParameter("contextConfigLocation"));
+
+
+        // 5.初始化HandlerMapping   // TODO 还未改造完
+        doInitHandlerMapping();
+        printHandlerMapper();
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         this.doPost(req, resp);
     }
@@ -59,17 +71,7 @@ public class RunDispatcherServlet extends HttpServlet {
     }
 
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
 
-        // 初始化spring核心ioc容器
-        applicationContext = new RunApplicationContext(config.getInitParameter("contextConfigLocation"));
-
-
-        // 5.初始化HandlerMapping   // TODO 还未改造完
-        doInitHandlerMapping();
-        printHandlerMapper();
-    }
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String url = req.getRequestURI();

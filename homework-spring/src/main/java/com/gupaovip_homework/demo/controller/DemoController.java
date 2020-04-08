@@ -36,7 +36,6 @@ public class DemoController {
     @RunRequestMapping("/add")
     public void add(HttpServletRequest request, HttpServletResponse response,
                     @RunRequestParam("name") String name) {
-
         try {
             response.getWriter().write(name);
         } catch (IOException e) {

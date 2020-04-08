@@ -57,7 +57,6 @@ public class RunBeandefinitionReader {
             e.printStackTrace();
         }
 
-        System.out.println("result=" + result);
         return result;
     }
 

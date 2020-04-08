@@ -87,6 +87,7 @@ public class RunApplicationContext {
         RunBeanWrapper beanWrapper = new RunBeanWrapper(instance);
         // 4. 保存到IoC容器
         factoryBeanInstanceCache.put(beanName, beanWrapper);
+
         // 5. 执行依赖注入
         populateBean(beanName, beandefinition, beanWrapper);
 
@@ -138,8 +139,8 @@ public class RunApplicationContext {
 
     // 创建真正的实例对象
     private Object instantiateBean(String beanName, RunBeandefinition beandefinition) {
-        System.out.println(beanName);
-        System.out.println(beandefinition);
+        System.out.println("实例化对象beanName= " + beanName);
+        System.out.println("实例化对象beandefinition= " + beandefinition);
         String className = beandefinition.getBeanClassName();
         Object instance = null;
         try {
