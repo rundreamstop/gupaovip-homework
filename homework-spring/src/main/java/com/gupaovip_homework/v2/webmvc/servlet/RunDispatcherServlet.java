@@ -43,10 +43,9 @@ public class RunDispatcherServlet extends HttpServlet {
         // 初始化Spring核心ioc容器
         applicationContext = new RunApplicationContext(config.getInitParameter("contextConfigLocation"));
 
-
         // 5.初始化HandlerMapping   // TODO 还未改造完
         doInitHandlerMapping();
-        printHandlerMapper();
+
     }
 
     @Override
@@ -71,8 +70,6 @@ public class RunDispatcherServlet extends HttpServlet {
     }
 
 
-
-
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String url = req.getRequestURI();
         String contextPath = req.getContextPath();
@@ -87,8 +84,8 @@ public class RunDispatcherServlet extends HttpServlet {
 
         Map<String, String[]> params = req.getParameterMap();
         String beanName = toLowerFirstCase(method.getDeclaringClass().getSimpleName());
-        // 再反射调用 控制器，传入request  等参数
-        method.invoke(ioc.get(beanName), new Object[]{req, resp, params.get("name")[0]});
+        // 再反射调用 控制器，传入request  等参数  再去get了一次
+        method.invoke(applicationContext.getBean(beanName), new Object[]{req, resp, params.get("name")[0]});
 
         // 参数灵活配置
         Class<?>[] parameterTypes = method.getParameterTypes();
@@ -96,11 +93,12 @@ public class RunDispatcherServlet extends HttpServlet {
     }
 
     private void doInitHandlerMapping() {
-        if (ioc.isEmpty()) {
+        if (applicationContext.getBeanDefinitionCount() <= 0) {
             return;
         }
-        for (Map.Entry<String, Object> entry : ioc.entrySet()) {
-            Class<?> clazz = entry.getValue().getClass();
+        for (String beanName : applicationContext.getBeanDefinitionNames()) {
+            Object instance = applicationContext.getBean(beanName);
+            Class<?> clazz = instance.getClass();
 
             // 判断加了controller 注解
             if (!clazz.isAnnotationPresent(RunController.class)) {
@@ -124,7 +122,6 @@ public class RunDispatcherServlet extends HttpServlet {
                 String url = ("/" + baseUrl + "/" + requestMapping.value()).
                         replaceAll("/+", "/");
                 handlerMapping.put(url, method);
-                System.out.println("Mapped：" + url + " ," + method);
             }
 
         }
@@ -136,29 +133,4 @@ public class RunDispatcherServlet extends HttpServlet {
         return String.valueOf(chars);
     }
 
-    private void printScannerList() {
-        System.out.println("打印扫描类开始=================================");
-        for (String className : classNames) {
-            System.out.println(className);
-        }
-        System.out.println("打印扫描类结束=================================");
-    }
-
-    private void printIocList() {
-        System.out.println("打印ioc容器开始=================================");
-        for (Map.Entry<String, Object> entry : ioc.entrySet()) {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
-        }
-        System.out.println("打印ioc容器结束=================================");
-    }
-
-    private void printHandlerMapper() {
-        System.out.println("打印printHandlerMapper开始=================================");
-        for (Map.Entry<String, Method> stringMethodEntry : this.handlerMapping.entrySet()) {
-            System.out.println(stringMethodEntry.getKey());
-            System.out.println(stringMethodEntry.getValue());
-        }
-        System.out.println("打印printHandlerMapper结束=================================");
-    }
 }

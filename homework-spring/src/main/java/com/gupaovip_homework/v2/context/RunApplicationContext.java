@@ -31,6 +31,14 @@ public class RunApplicationContext {
     // 原生对象 单独的容器保存原生对象
     private Map<String, Object> factoryBeanObjectCache = new HashMap<String, Object>();
 
+    public int getBeanDefinitionCount() {
+        return this.beandefinitionMap.size();
+    }
+
+    public String[] getBeanDefinitionNames() {
+        return this.beandefinitionMap.keySet().toArray(new String[this.beandefinitionMap.size()]);
+    }
+
     public RunApplicationContext(String... configLocations) {
 
         try {
@@ -42,15 +50,12 @@ public class RunApplicationContext {
             for (RunBeandefinition beandefinition : beandefinitions) {
                 System.out.println("封装为beandefinition= " + beandefinition);
             }
-            System.out.println("封装beandefinition 完成");
 
             // 3.把Beandefinition
             doRegistBeanDefinition(beandefinitions);
-            System.out.println();
 
             doAutowrited();
 
-            // beandefinitionMap
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,12 +71,14 @@ public class RunApplicationContext {
     }
 
     private void doRegistBeanDefinition(List<RunBeandefinition> beandefinitions) throws Exception {
+
         for (RunBeandefinition beandefinition : beandefinitions) {
+            System.out.println(beandefinition.getFactoryBeanName() + "  " + beandefinition);
             // 两种方式注入 缓存起来
-//            if (this.beandefinitionMap.containsKey(beandefinition.getFactoryBeanName())) {
-//                throw new Exception("这个bean已存在" + beandefinition.getFactoryBeanName());
-//            }
-//            beandefinitionMap.put(beandefinition.getFactoryBeanName(), beandefinition);
+            if (this.beandefinitionMap.containsKey(beandefinition.getFactoryBeanName())) {
+                throw new Exception("这个bean已存在" + beandefinition.getFactoryBeanName());
+            }
+            beandefinitionMap.put(beandefinition.getFactoryBeanName(), beandefinition);
             beandefinitionMap.put(beandefinition.getBeanClassName(), beandefinition);
         }
     }
@@ -144,12 +151,15 @@ public class RunApplicationContext {
         String className = beandefinition.getBeanClassName();
         Object instance = null;
         try {
-            Class<?> clazz = Class.forName(className);
-            // 默认对的类名首字母小写、
-            instance = clazz.newInstance();
-            // 保存原生实例化对象  备忘录模式
-            this.factoryBeanObjectCache.put(beanName, instance);
-
+            if (this.factoryBeanObjectCache.containsKey(beanName)) {
+                instance = factoryBeanObjectCache.get(beanName);
+            } else {
+                Class<?> clazz = Class.forName(className);
+                // 默认对的类名首字母小写、
+                instance = clazz.newInstance();
+                // 保存原生实例化对象  备忘录模式
+                this.factoryBeanObjectCache.put(beanName, instance);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

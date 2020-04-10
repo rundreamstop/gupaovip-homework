@@ -42,6 +42,9 @@ public class RunBeandefinitionReader {
             for (String className : registryBeanClasses) {
                 Class<?> beanClass = Class.forName(className);
                 // 保存类对象的 ClassName 对应的全类名
+                if (beanClass.isInterface()) {
+                    continue;
+                }
 
                 String factoryBeanName = toLowerFirstCase(beanClass.getSimpleName());
                 String beanClassName = beanClass.getName();
