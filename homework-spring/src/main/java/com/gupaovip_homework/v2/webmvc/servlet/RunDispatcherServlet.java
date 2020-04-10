@@ -2,6 +2,7 @@ package com.gupaovip_homework.v2.webmvc.servlet;
 
 import com.gupaovip_homework.annotation.RunController;
 import com.gupaovip_homework.annotation.RunRequestMapping;
+import com.gupaovip_homework.annotation.RunRequestParam;
 import com.gupaovip_homework.v2.context.RunApplicationContext;
 
 import javax.servlet.ServletConfig;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -84,11 +86,39 @@ public class RunDispatcherServlet extends HttpServlet {
 
         Map<String, String[]> params = req.getParameterMap();
         String beanName = toLowerFirstCase(method.getDeclaringClass().getSimpleName());
-        // 再反射调用 控制器，传入request  等参数  再去get了一次
-        method.invoke(applicationContext.getBean(beanName), new Object[]{req, resp, params.get("name")[0]});
-
         // 参数灵活配置
         Class<?>[] parameterTypes = method.getParameterTypes();
+        Object[] paramValues = new Object[parameterTypes.length];
+
+        //通过运行时拿到参数
+        for (int i = 0; i < parameterTypes.length; i++) {
+            Class paramterType = parameterTypes[i];
+            if (paramterType == HttpServletRequest.class) {
+                paramValues[i] = req;
+            } else if (paramterType == HttpServletResponse.class) {
+                paramValues[i] = resp;
+            } else if (paramterType == String.class) {
+                //通过运行时的状态去拿到你
+                Annotation[][] pa = method.getParameterAnnotations();
+                for (int j = 0; j < pa.length; j++) {
+                    for (Annotation a : pa[i]) {
+                        if (a instanceof RunRequestParam) {
+                            String paramName = ((RunRequestParam) a).value();
+                            if (!"".equals(paramName.trim())) {
+                                String value = Arrays.toString(params.get(paramName))
+                                        .replaceAll("\\[|\\]", "")
+                                        .replaceAll("\\s+", ",");
+                                paramValues[i] = value;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // 再反射调用 控制器，传入request  等参数  再去get了一次
+        method.invoke(applicationContext.getBean(beanName), paramValues);
 
     }
 

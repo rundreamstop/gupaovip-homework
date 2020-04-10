@@ -7,7 +7,7 @@
     <display-name>Gupao Web Application</display-name>
     <servlet>
         <servlet-name>homework-spring</servlet-name>
-        <servlet-class>com.gupaovip_homework.v2.webmvc.servlet.RunDispatcherServlet</servlet-class>
+        <servlet-class>com.gupaovip_homework.v3.webmvc.servlet.RunDispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:application.properties</param-value>
