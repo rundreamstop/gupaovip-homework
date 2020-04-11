@@ -25,30 +25,37 @@ public class DemoController {
     IDemoService iDemoService;
 
     @RunRequestMapping("/query*")
-    public RunModelAndView query(HttpServletRequest request, HttpServletResponse response,
-                                 @RunRequestParam("name") String name) {
+    public void query(HttpServletRequest request, HttpServletResponse response,
+                      @RunRequestParam("name") String name) throws IOException {
 
+        System.out.println("name values " + name);
         String name1 = iDemoService.getName(name);
 
-        return out(name1, request, response);
+        response.getWriter().write(name1);
+
     }
 
-    @RunRequestMapping("/mvc*")
-    public RunModelAndView mvc(HttpServletRequest request, HttpServletResponse response,
-                               @RunRequestParam("data") String data) {
+    @RunRequestMapping("/mvcList*")
+    public RunModelAndView mvcList(HttpServletRequest request, HttpServletResponse response,
+                                   @RunRequestParam("data") String data, @RunRequestParam("name") String name) {
 
-//        String data1 = iDemoService.getName(data);
+        String data1 = iDemoService.getName(data);
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("data", "zhangzihao");
+        model.put("data", data1);
+        model.put("name", name);
+        model.put("time", System.currentTimeMillis());
 
         return new RunModelAndView("first", model);
     }
 
-    @RunRequestMapping("/add")
-    public RunModelAndView add(HttpServletRequest request, HttpServletResponse response,
-                               @RunRequestParam("name") String name) {
-
-        return out(name, request, response);
+    @RunRequestMapping("/voids*")
+    public RunModelAndView voids(HttpServletRequest request, HttpServletResponse response,@RunRequestParam("name") String name) {
+        try {
+            response.getWriter().write(name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private RunModelAndView out(String str, HttpServletRequest request,

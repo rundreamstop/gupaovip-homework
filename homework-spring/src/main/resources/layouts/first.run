@@ -5,6 +5,7 @@
 	<title>MVC自定义模板引擎</title>
 </head>
 <center>
-	<h1>大家好，我是%{data}</h1>
+	<h1>大家好，我是%{name} </h1>
+	<h1>大家好，我要做%{data} </h1>
 </center>
 </html>

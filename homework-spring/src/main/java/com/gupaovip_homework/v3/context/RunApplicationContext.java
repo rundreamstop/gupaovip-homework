@@ -74,7 +74,6 @@ public class RunApplicationContext {
     private void doRegistBeanDefinition(List<RunBeandefinition> beandefinitions) throws Exception {
 
         for (RunBeandefinition beandefinition : beandefinitions) {
-            System.out.println(beandefinition.getFactoryBeanName() + "  " + beandefinition);
             // 两种方式注入 缓存起来
             if (this.beandefinitionMap.containsKey(beandefinition.getFactoryBeanName())) {
                 throw new Exception("这个bean已存在" + beandefinition.getFactoryBeanName());

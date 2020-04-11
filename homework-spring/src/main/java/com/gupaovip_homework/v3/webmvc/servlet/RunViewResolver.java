@@ -1,10 +1,13 @@
 package com.gupaovip_homework.v3.webmvc.servlet;
 
+import lombok.Data;
+
 import java.io.File;
 
 /**
  * @Author: Ray Allen  @Time:2020/4/10 0010
  */
+@Data
 public class RunViewResolver {
 
     private final String DEFAULT_TEMPLATE_SUFFIX = ".run";

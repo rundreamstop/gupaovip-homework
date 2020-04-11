@@ -1,6 +1,7 @@
 package com.gupaovip_homework.v3.webmvc.servlet;
 
 import com.gupaovip_homework.annotation.RunRequestParam;
+import lombok.Data;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import java.util.Map;
 /**
  * @Author: Ray Allen  @Time:2020/4/10 0010
  */
+@Data
 public class RunHandlerAdapter {
 
     public RunModelAndView handler(HttpServletRequest req, HttpServletResponse resp, RunHandlerMapping handler) throws Exception {
@@ -40,7 +42,6 @@ public class RunHandlerAdapter {
             } else if (paramterType == HttpServletResponse.class) {
                 paramIndexMapping.put(paramterType.getName(), i);
             } else if (paramterType == String.class) {
-
             }
         }
 
@@ -52,7 +53,7 @@ public class RunHandlerAdapter {
             String value = Arrays.toString(params.get(param.getKey()))
                     .replaceAll("\\[|\\]", "")
                     .replaceAll("\\s+", ",");
-            if (paramIndexMapping.containsKey(param.getKey())) {
+            if (!paramIndexMapping.containsKey(param.getKey())) {
                 continue;
             }
             int index = paramIndexMapping.get(param.getKey());

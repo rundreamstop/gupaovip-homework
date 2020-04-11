@@ -5,13 +5,15 @@ import com.gupaovip_homework.annotation.RunRequestMapping;
 import com.gupaovip_homework.v3.context.RunApplicationContext;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,26 +26,24 @@ import java.util.regex.Pattern;
 public class RunDispatcherServlet extends HttpServlet {
 
     private static final long serialVersionUID = 2076670715409371630L;
-    // 配置读取
-    private Properties contextConfig = new Properties();
 
+    // application
     private RunApplicationContext applicationContext;
 
     // handlerMapping
     private List<RunHandlerMapping> handlerMappings = new ArrayList<RunHandlerMapping>();
 
-    private Map<RunHandlerMapping, RunHandlerAdapter> handlerAdapters =
-            new HashMap<RunHandlerMapping, RunHandlerAdapter>();
+    private Map<RunHandlerMapping, RunHandlerAdapter> handlerAdapters = new HashMap<RunHandlerMapping, RunHandlerAdapter>();
 
     private List<RunViewResolver> viewResolvers = new ArrayList<RunViewResolver>();
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) {
 
         // 初始化Spring核心ioc容器
         applicationContext = new RunApplicationContext(config.getInitParameter("contextConfigLocation"));
 
-        //TODO  初始化九大组件
+        // 初始化mvc 九大组件
         initStrategies(applicationContext);
 
     }
@@ -52,15 +52,24 @@ public class RunDispatcherServlet extends HttpServlet {
 
         // TODO 初始化核心 组件
 
-        // 初始化hanlderMapping
+        // 初始化hanlderMapping  得到controller 注解的 RunHandlerMapping 对象
         initHandlerMappings();
+        for (RunHandlerMapping handlerMapping : handlerMappings) {
+            System.out.println(handlerMapping);
+        }
 
-        // 初始化参数适配器
+        // 初始化 参数适配器
         initHandlerAdapters();
 
-        // 初始化视图转化器
+        for (Map.Entry<RunHandlerMapping, RunHandlerAdapter> runHandlerMappingRunHandlerAdapterEntry : handlerAdapters.entrySet()) {
+            System.out.println(runHandlerMappingRunHandlerAdapterEntry);
+        }
+        // 初始化 视图转化器
         initViewResolvers(context);
 
+        for (RunViewResolver viewResolver : viewResolvers) {
+            System.out.println(viewResolver);
+        }
     }
 
     private void initViewResolvers(RunApplicationContext context) {
@@ -84,6 +93,8 @@ public class RunDispatcherServlet extends HttpServlet {
             return;
         }
         for (String beanName : applicationContext.getBeanDefinitionNames()) {
+
+            // getBean的时候再去实例化
             Object instance = applicationContext.getBean(beanName);
             Class<?> clazz = instance.getClass();
 
@@ -135,7 +146,6 @@ public class RunDispatcherServlet extends HttpServlet {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            e.printStackTrace();
         }
     }
 
@@ -149,6 +159,7 @@ public class RunDispatcherServlet extends HttpServlet {
         RunHandlerMapping handler = getHandler(req);
         if (handler == null) {
             processDispatchResult(req, resp, new RunModelAndView("404"));
+            return;
         }
 
         // 2、根据一个HandlerMapping获得一个HandlerAdapter
@@ -185,7 +196,6 @@ public class RunDispatcherServlet extends HttpServlet {
             view.render(mv.getModel(), req, resp);
             return;
         }
-
     }
 
     private RunHandlerMapping getHandler(HttpServletRequest req) {
