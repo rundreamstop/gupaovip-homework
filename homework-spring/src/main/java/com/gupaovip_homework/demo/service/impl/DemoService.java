@@ -8,7 +8,7 @@ import com.gupaovip_homework.demo.service.IDemoService;
  */
 
 @RunService
-public class IDemoServiceImpl implements IDemoService {
+public class DemoService implements IDemoService {
 
     @Override
     public String getName(String str) {

@@ -1,0 +1,23 @@
+package com.gupaovip_homework.v4.aop.config;
+
+import lombok.Data;
+
+/**
+ * @Author: Ray Allen  @Time:2020/4/14 0014
+ */
+
+@Data
+public class RunAopConfig {
+
+    private String pointCut;
+
+    private String aspectClass;
+
+    private String aspectBefore;
+
+    private String aspectAfter;
+
+    private String aspectAfterThrow;
+
+    private String aspectAfterThrowingName;
+}
