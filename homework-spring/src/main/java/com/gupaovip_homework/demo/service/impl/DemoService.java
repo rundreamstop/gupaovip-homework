@@ -12,6 +12,7 @@ public class DemoService implements IDemoService {
 
     @Override
     public String getName(String str) {
+        System.out.println("接口实现DemoService日志");
         return "params is:" + str;
     }
 }

@@ -146,9 +146,9 @@ public class RunDispatcherServlet extends HttpServlet {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            e.printStackTrace();
         }
     }
-
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 

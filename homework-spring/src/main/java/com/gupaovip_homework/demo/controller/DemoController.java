@@ -28,11 +28,8 @@ public class DemoController {
     public void query(HttpServletRequest request, HttpServletResponse response,
                       @RunRequestParam("name") String name) throws IOException {
 
-        System.out.println("name values " + name);
         String name1 = iDemoService.getName(name);
-
         response.getWriter().write(name1);
-
     }
 
     @RunRequestMapping("/mvcList*")

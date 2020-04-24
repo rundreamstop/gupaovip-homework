@@ -5,6 +5,8 @@ import lombok.Data;
 import java.lang.reflect.Method;
 
 /**
+ * 用于通知回调
+ *
  * @Author: Ray Allen  @Time:2020/4/14 0014
  */
 

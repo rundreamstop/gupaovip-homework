@@ -149,8 +149,6 @@ public class RunApplicationContext {
 
     // 创建真正的实例对象
     private Object instantiateBean(String beanName, RunBeandefinition beandefinition) {
-        System.out.println("实例化对象beanName= " + beanName);
-        System.out.println("实例化对象beandefinition= " + beandefinition);
         String className = beandefinition.getBeanClassName();
         Object instance = null;
         try {

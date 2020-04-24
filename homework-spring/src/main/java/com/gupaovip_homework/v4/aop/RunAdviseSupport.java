@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 配置解析
  * @Author: Ray Allen  @Time:2020/4/14 0014
  */
 
@@ -100,7 +101,7 @@ public class RunAdviseSupport {
             cache = methodCache.get(m);
             this.methodCache.put(m, cache);
         }
-        return null;
+        return cache;
     }
 
     public boolean pointCutMath() {

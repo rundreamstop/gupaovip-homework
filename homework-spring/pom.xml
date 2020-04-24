@@ -56,7 +56,7 @@
                     <target>1.6</target>
                     <encoding>UTF-8</encoding>
                     <compilerArguments>
-                        <verbose/>
+                        <verbose />
                         <bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
                     </compilerArguments>
                 </configuration>
@@ -98,7 +98,7 @@
                     <contextPath>/</contextPath>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                            <port>8080</port>
+                            <port>80</port>
                         </connector>
                     </connectors>
                     <scanIntervalSeconds>0</scanIntervalSeconds>
@@ -160,11 +160,6 @@
                             <includes>
                                 <include>**/*.*</include>
                             </includes>
-                            <!-- <excludes>
-                                <exclude>**/local</exclude>
-                                <exclude>**/test</exclude>
-                                <exclude>**/product</exclude>
-                            </excludes> -->
                             <filtering>true</filtering>
                         </resource>
                         <resource>
@@ -190,7 +185,6 @@
                 </executions>
                 <version>1.0.5</version>
             </plugin>
-
         </plugins>
         <pluginManagement>
             <plugins>
@@ -229,5 +223,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
 </project>
